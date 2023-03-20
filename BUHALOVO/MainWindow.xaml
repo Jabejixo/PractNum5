@@ -1,0 +1,93 @@
+﻿<Window x:Class="BUHALOVO.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BUHALOVO"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+        <Window.Resources>
+            <local:MyMultiConverter x:Key="MyMultiConverter"/>
+        </Window.Resources>
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25*"/>
+            <RowDefinition Height="121*"/>
+            <RowDefinition Height="146*"/>
+            <RowDefinition Height="117*"/>
+            <RowDefinition Height="28*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <DatePicker x:Name="DatePic" Grid.ColumnSpan="3" SelectedDateChanged="DatePicker_SelectedDateChanged"></DatePicker>
+        <TextBlock Text="Итог: " x:Name="MoneyCounter" TextAlignment="Center" Grid.Column="1" Grid.Row="4"></TextBlock>
+        <DataGrid x:Name="NoteDataGrid" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="3" IsReadOnly="True" SelectionMode="Single" SelectionChanged="NoteDataGrid_SelectionChanged" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" />
+                <DataGridTextColumn Header="Тип" Binding="{Binding Type}" />
+                <DataGridTextColumn Header="Кол-во денег" Binding="{Binding AmountOfMoney}" />
+                <DataGridCheckBoxColumn Header="Доход" Binding="{Binding IsReceipt}" />
+                <!-- Убираем столбец "Date" -->
+                <!--<DataGridTextColumn Header="Date" Binding="{Binding Date}" />-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Column = "2" Grid.Row="1" Grid.RowSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="20"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Имя записи" Grid.Row="0" Grid.Column="1" TextAlignment="Center"></TextBlock>
+            <TextBox x:Name="NoteNameTBox" Grid.Row="1" Grid.Column="1" Margin="5"></TextBox>
+            <ComboBox x:Name="ChoiceTypeMenu" Grid.Row="2" Grid.Column="1" SelectionChanged="ChoiceTypeMenu_SelectionChanged" IsEditable="True"></ComboBox>
+            <Button x:Name="CreateNewType" Content="Добавить новый тип" Grid.Column="1" Grid.Row="3" Click="CreateNewType_Click"></Button>
+            <TextBlock Grid.Row="4" Grid.Column="1" Text="Сумма денег" TextAlignment="Center"></TextBlock>
+            <TextBox x:Name="NoteMoneyTBox" Grid.Row="5" Grid.Column="1" Margin="5" PreviewTextInput="NoteMoneyTBox_PreviewTextInput" />
+            <Button x:Name="CreateNote" Content="Создать" Grid.Column="1" Grid.Row="7" Click="CreateNote_Click">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MyMultiConverter}">
+                        <Binding ElementName="NoteNameTBox" Path="Text"/>
+                        <Binding ElementName="NoteMoneyTBox" Path="Text"/>
+                        <Binding ElementName="ChoiceTypeMenu" Path="Text"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button x:Name="ChangeNote" Content ="Изменить" Grid.Column="1" Grid.Row="8" Click="ChangeNote_Click">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MyMultiConverter}">
+                        <Binding ElementName="NoteNameTBox" Path="Text"/>
+                        <Binding ElementName="NoteMoneyTBox" Path="Text"/>
+                        <Binding ElementName="ChoiceTypeMenu" Path="Text"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+            <Button x:Name="DelNote" Content="Удалить" Grid.Column="1" Grid.Row="9" Click="DelNote_Click">
+                <Button.IsEnabled>
+                    <MultiBinding Converter="{StaticResource MyMultiConverter}">
+                        <Binding ElementName="NoteNameTBox" Path="Text"/>
+                        <Binding ElementName="NoteMoneyTBox" Path="Text"/>
+                        <Binding ElementName="ChoiceTypeMenu" Path="Text"/>
+                    </MultiBinding>
+                </Button.IsEnabled>
+            </Button>
+        </Grid>
+        
+    </Grid>
+</Window>
